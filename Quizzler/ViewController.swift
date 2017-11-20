@@ -21,39 +21,37 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        nextQuestion()
     }
 
 
     @IBAction func answerPressed(_ sender: AnyObject) {
         pickedAnswer = (sender.tag == 1)
         checkAnswer()
+        questionNumber += 1
         nextQuestion()
-        updateUI()
     }
     
     
     func updateUI() {
-      questionLabel.text = allQuestions.list[questionNumber].questionText
     }
     
 
     func nextQuestion() {
-        if questionNumber == allQuestions.list.count - 1 {
-            let alert = UIAlertController(title: "Awesome!", message: "You've finished all the questions, do you want to start over?", preferredStyle: .alert)
         
-            let restartAction = UIAlertAction.init(title: "Yes", style: .default, handler: { (UIAlertAction) in
+        if questionNumber < allQuestions.list.count{
+            questionLabel.text = allQuestions.list[questionNumber].questionText
+        }
+        else{
+            let alert = UIAlertController(title: "Awesome!", message: "You've finished all the questions, do you want to start over?", preferredStyle: .alert)
+            
+            let restartAction = UIAlertAction.init(title: "Restart", style: .default, handler: { (UIAlertAction) in
                 self.startOver()
             })
             
-            let cancelAction = UIAlertAction.init(title: "No", style: .cancel, handler:nil)
-            
             alert.addAction(restartAction)
-            alert.addAction(cancelAction)
             
             present(alert, animated: true, completion: nil)
-        }else {
-            questionNumber += 1
         }
     }
     
@@ -69,7 +67,7 @@ class ViewController: UIViewController {
     
     func startOver() {
        questionNumber = 0
-       updateUI()
+       nextQuestion()
     }
     
 
